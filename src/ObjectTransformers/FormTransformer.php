@@ -8,15 +8,15 @@ class FormTransformer implements ObjectTransformerInterface
 {
 	
 	/**
-	 * @param $xmlData
+	 * @param $jsonResponseData
 	 *
 	 * @return array
 	 */
-	function transform($xmlData)
+	function transform($jsonResponseData)
 	{
 		$forms = array();
 		
-		foreach($xmlData->forms as $jsonDecodedForm)
+		foreach($jsonResponseData->forms as $jsonDecodedForm)
 			$forms[] = new FormModel((object) $jsonDecodedForm);
 		
 		return $forms;

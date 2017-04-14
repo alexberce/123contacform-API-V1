@@ -2,25 +2,30 @@
 
 namespace ContactForm\Api\V1;
 
+use ContactForm\Api\V1\ObjectTransformers\FieldTransformer;
 use ContactForm\Api\V1\ObjectTransformers\FormTransformer;
 
 class ObjectTransformer
 {
 	const FORM_TRANSFORMER = 'Form';
+	const FIELD_TRANSFORMER = 'Field';
 	
 	/**
-	 * @param $xmlData
+	 * @param $jsonResponseData
 	 *
 	 * @param $type
 	 *
 	 * @return array
 	 * @throws ApiException
 	 */
-	public static function transform($xmlData, $type)
+	public static function transform($jsonResponseData, $type)
 	{
 		switch($type){
-			case 'Form':
-				return (new FormTransformer())->transform($xmlData);
+			case self::FORM_TRANSFORMER:
+				return (new FormTransformer())->transform($jsonResponseData);
+				break;
+			case self::FIELD_TRANSFORMER:
+				return (new FieldTransformer())->transform($jsonResponseData);
 				break;
 			default:
 				throw new ApiException('Transformer of type ' . $type . ' not recognized.');

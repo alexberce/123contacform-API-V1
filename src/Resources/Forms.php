@@ -3,6 +3,7 @@
 namespace ContactForm\Api\V1\Resources;
 
 use ContactForm\Api\V1\ApiClient;
+use ContactForm\Api\V1\Models\FieldModel;
 use ContactForm\Api\V1\Models\FormModel;
 use ContactForm\Api\V1\ObjectTransformer;
 
@@ -27,6 +28,9 @@ class Forms
 		$this->apiClient = $apiClient;
 	}
 	
+	/**
+	 * @return FormModel[]
+	 */
 	public function getForms(){
 
 		$resourcePath = "/forms.json";
@@ -52,5 +56,18 @@ class Forms
 		list($response, $statusCode, $httpHeader) = $this->apiClient->callApi($resourcePath, 'GET');
 		
 		return current(ObjectTransformer::transform($response, ObjectTransformer::FORM_TRANSFORMER));
+	}
+	
+	/**
+	 * @param $formId
+	 *
+	 * @return FieldModel[]
+	 */
+	public function getFormFields($formId){
+		$resourcePath = "/forms/{$formId}/fields.json";
+		
+		list($response, $statusCode, $httpHeader) = $this->apiClient->callApi($resourcePath, 'GET');
+		
+		return ObjectTransformer::transform($response, ObjectTransformer::FIELD_TRANSFORMER);
 	}
 }

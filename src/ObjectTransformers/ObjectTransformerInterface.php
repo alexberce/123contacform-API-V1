@@ -7,9 +7,9 @@ namespace ContactForm\Api\V1\ObjectTransformers;
 interface ObjectTransformerInterface
 {
 	/**
-	 * @param $xmlData
+	 * @param $jsonResponseData
 	 *
 	 * @return array
 	 */
-	function transform($xmlData);
+	function transform($jsonResponseData);
 }
