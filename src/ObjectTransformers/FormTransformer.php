@@ -16,10 +16,7 @@ class FormTransformer implements ObjectTransformerInterface
 	{
 		$forms = array();
 		
-		$xml = simplexml_load_string($xmlData, "SimpleXMLElement", LIBXML_NOCDATA);
-		$jsonDecodedForms = current(json_decode(json_encode($xml), true));
-		
-		foreach($jsonDecodedForms as $jsonDecodedForm)
+		foreach($xmlData->forms as $jsonDecodedForm)
 			$forms[] = new FormModel((object) $jsonDecodedForm);
 		
 		return $forms;
