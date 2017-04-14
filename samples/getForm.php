@@ -1,4 +1,4 @@
-<pre><?php
+<?php
 
 use ContactForm\Api\V1\ApiClient;
 use ContactForm\Api\V1\Resources\Forms;
