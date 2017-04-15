@@ -8,7 +8,6 @@ require_once '../vendor/autoload.php';
 $apiClient = (new ApiClient())
 	->withApiKey('APY-KEY-HERE');
 
-/** @var $forms \ContactForm\Api\V1\Models\FormModel[] */
 $forms = (new Forms($apiClient))->getForms();
 
 foreach($forms as $form){

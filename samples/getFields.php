@@ -8,7 +8,6 @@ $apiClient = (new ApiClient())
 	->withApiKey('APY-KEY-HERE');
 $formId = 'FORM-ID-HERE';
 
-/** @var $fields \ContactForm\Api\V1\Models\FieldModel[] */
 $fields = (new Forms($apiClient))->getFormFields($formId);
 
 foreach($fields as $field){
