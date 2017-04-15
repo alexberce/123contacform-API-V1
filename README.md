@@ -3,7 +3,7 @@
 Small PHP SDK and samples for version 1 of 123ContactForm API
 
 
-## Please Note
+### Please Note
 
 > **If you need advanced functionality, we highly recommend you to use [API V2](https://developer.123contactform.com/api-v2/)**
 
