@@ -61,6 +61,11 @@ class FormModel
 	 */
 	private $numberOfTotalSubmissions;
 	
+	/**
+	 * FormModel constructor.
+	 *
+	 * @param $data
+	 */
 	public function __construct($data)
 	{
 		$this->id                       = (int) $data->formId;
