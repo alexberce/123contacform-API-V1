@@ -5,6 +5,7 @@ namespace ContactForm\Api\V1\Resources;
 use ContactForm\Api\V1\ApiClient;
 use ContactForm\Api\V1\Models\FieldModel;
 use ContactForm\Api\V1\Models\FormModel;
+use ContactForm\Api\V1\Models\SubmissionModel;
 use ContactForm\Api\V1\ObjectTransformer;
 
 class Forms
@@ -69,5 +70,18 @@ class Forms
 		list($response, $statusCode, $httpHeader) = $this->apiClient->callApi($resourcePath, 'GET');
 		
 		return ObjectTransformer::transform($response, ObjectTransformer::FIELD_TRANSFORMER);
+	}
+	
+	/**
+	 * @param $formId
+	 *
+	 * @return SubmissionModel[]
+	 */
+	public function getSubmissions($formId){
+		$resourcePath = "/forms/{$formId}/submissions.json";
+		
+		list($response, $statusCode, $httpHeader) = $this->apiClient->callApi($resourcePath, 'GET');
+		
+		return ObjectTransformer::transform($response, ObjectTransformer::SUBMISSION_TRANSFORMER);
 	}
 }
