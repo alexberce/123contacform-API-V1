@@ -17,6 +17,11 @@ You can find the docs for API v1 at [https://developer.123contactform.com/api-v1
 
 _Please note that a Basic user can perform up to 100 API calls per day._
 
+## Prerequisites
+
+   - PHP 5.3 or above
+   - [curl](https://secure.php.net/manual/en/book.curl.php), [json](https://secure.php.net/manual/en/book.json.php) & [openssl](https://secure.php.net/manual/en/book.openssl.php) extensions must be enabled
+
 ### Authentication
 
 123ContactForm API v1 requires a valid API key, which can be generated from the API Keys section of My Account page (after you login your 123ContactForm account).
@@ -44,7 +49,7 @@ _Please note that a Basic user can perform up to 100 API calls per day._
 
 _Make sure to replace the string APY-KEY-HERE with your actual API key_
 
-### Examples
+### Samples
 
 * [Get All Forms](/samples/getForms.php)
 * [Get Single Form](/samples/getForm.php)
