@@ -165,7 +165,7 @@ class Forms
 	 * @param $formId
 	 * @param $webHookUrl
 	 *
-	 * @return array
+	 * @return string
 	 * @throws ApiException
 	 */
 	public function addWebHook($formId, $webHookUrl)
