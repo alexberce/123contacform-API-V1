@@ -50,8 +50,9 @@ class Users
 	 */
 	public function getForms(){
 		
-		if (empty($this->emailAddress))
-			throw new \InvalidArgumentException('Email address must be a string.');
+		if (empty($this->emailAddress)) {
+			throw new \InvalidArgumentException('Missing the required parameter emailAddress when calling getForms');
+		}
 		
 		$resourcePath = "/subusers/{$this->emailAddress}/forms.json";
 		
@@ -71,8 +72,13 @@ class Users
 	 */
 	public function getForm($formId){
 		
-		if (empty($this->emailAddress))
-			throw new \InvalidArgumentException('Email address must be a string.');
+		if (!is_numeric($formId)) {
+			throw new \InvalidArgumentException('Invalid $formId parameter type when calling getForm');
+		}
+		
+		if (empty($this->emailAddress)) {
+			throw new \InvalidArgumentException('Missing the required parameter emailAddress when calling getForm');
+		}
 		
 		$resourcePath = "/subusers/{$this->emailAddress}/forms/{$formId}.json";
 		

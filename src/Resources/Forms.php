@@ -46,13 +46,17 @@ class Forms
 	}
 	
 	/**
-	 * @param $id
+	 * @param $formId
 	 *
 	 * @return FormModel
 	 */
-	public function getForm($id){
+	public function getForm($formId){
 		
-		$resourcePath = "/forms/{$id}.json";
+		if (!is_numeric($formId)) {
+			throw new \InvalidArgumentException('Invalid $formId parameter type when calling getForm');
+		}
+		
+		$resourcePath = "/forms/{$formId}.json";
 		
 		list($response, $statusCode, $httpHeader) = $this->apiClient->callApi($resourcePath, 'GET');
 		
@@ -65,6 +69,11 @@ class Forms
 	 * @return FieldModel[]
 	 */
 	public function getFormFields($formId){
+		
+		if (!is_numeric($formId)) {
+			throw new \InvalidArgumentException('Invalid $formId parameter type when calling getFormFields');
+		}
+		
 		$resourcePath = "/forms/{$formId}/fields.json";
 		
 		list($response, $statusCode, $httpHeader) = $this->apiClient->callApi($resourcePath, 'GET');
@@ -78,9 +87,57 @@ class Forms
 	 * @return SubmissionModel[]
 	 */
 	public function getSubmissions($formId){
+		
+		if (!is_numeric($formId)) {
+			throw new \InvalidArgumentException('Invalid $formId parameter type when calling getSubmissions');
+		}
+		
 		$resourcePath = "/forms/{$formId}/submissions.json";
 		
 		list($response, $statusCode, $httpHeader) = $this->apiClient->callApi($resourcePath, 'GET');
+		
+		return ObjectTransformer::transform($response, ObjectTransformer::SUBMISSION_TRANSFORMER);
+	}
+	
+	/**
+	 * @param $formId
+	 *
+	 * @return int
+	 */
+	public function getSubmissionsCount($formId)
+	{
+		
+		if (!is_numeric($formId)) {
+			throw new \InvalidArgumentException('Invalid $formId parameter type when calling getSubmissionsCount');
+		}
+		
+		$resourcePath = "/forms/{$formId}/submissions/count.json";
+		
+		list($response, $statusCode, $httpHeader) = $this->apiClient->callApi($resourcePath, 'GET');
+		
+		return (int) $response->submissionsCount;
+	}
+	
+	/**
+	 * @param $formId
+	 * @param $webHookUrl
+	 *
+	 * @return array
+	 */
+	public function addWebHook($formId, $webHookUrl)
+	{
+		
+		if (!is_numeric($formId)) {
+			throw new \InvalidArgumentException('Invalid $formId parameter type when calling addWebHook');
+		}
+		
+		if ($webHookUrl === null) {
+			throw new \InvalidArgumentException('Missing the required parameter $webHookUrl when calling addWebHook');
+		}
+		
+		$resourcePath = "/forms/{$formId}/webhooks.json";
+		
+		list($response, $statusCode, $httpHeader) = $this->apiClient->callApi($resourcePath, 'GET', array('webhookUrl' => $webHookUrl));
 		
 		return ObjectTransformer::transform($response, ObjectTransformer::SUBMISSION_TRANSFORMER);
 	}
