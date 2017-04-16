@@ -5,6 +5,7 @@ namespace ContactForm\Api\V1\Resources;
 
 
 use ContactForm\Api\V1\ApiClient;
+use ContactForm\Api\V1\ApiException;
 use ContactForm\Api\V1\Models\FormModel;
 use ContactForm\Api\V1\ObjectTransformer;
 
@@ -47,6 +48,7 @@ class Users
 	
 	/**
 	 * @return FormModel[]
+	 * @throws ApiException
 	 */
 	public function getForms(){
 		
@@ -58,8 +60,12 @@ class Users
 		
 		list($response, $statusCode, $httpHeader) = $this->apiClient->callApi($resourcePath, 'GET');
 		
-		if (!$response) {
-			return array(null, $statusCode, $httpHeader);
+		if(!$response || isset($response->errorMessage)){
+			
+			$errorMessage = isset($response->errorMessage) ? $response->errorMessage : ApiException::UNKNOWN_API_EXCEPTION;
+			
+			throw new ApiException($errorMessage, $statusCode, $httpHeader);
+			
 		}
 		
 		return ObjectTransformer::transform($response, ObjectTransformer::FORM_TRANSFORMER);
@@ -69,6 +75,7 @@ class Users
 	 * @param $formId
 	 *
 	 * @return FormModel
+	 * @throws ApiException
 	 */
 	public function getForm($formId){
 		
@@ -83,6 +90,14 @@ class Users
 		$resourcePath = "/subusers/{$this->emailAddress}/forms/{$formId}.json";
 		
 		list($response, $statusCode, $httpHeader) = $this->apiClient->callApi($resourcePath, 'GET');
+		
+		if(!$response || isset($response->errorMessage)){
+			
+			$errorMessage = isset($response->errorMessage) ? $response->errorMessage : ApiException::UNKNOWN_API_EXCEPTION;
+			
+			throw new ApiException($errorMessage, $statusCode, $httpHeader);
+			
+		}
 		
 		return current(ObjectTransformer::transform($response, ObjectTransformer::FORM_TRANSFORMER));
 	}

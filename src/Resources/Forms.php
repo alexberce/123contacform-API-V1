@@ -3,6 +3,7 @@
 namespace ContactForm\Api\V1\Resources;
 
 use ContactForm\Api\V1\ApiClient;
+use ContactForm\Api\V1\ApiException;
 use ContactForm\Api\V1\Models\FieldModel;
 use ContactForm\Api\V1\Models\FormModel;
 use ContactForm\Api\V1\Models\SubmissionModel;
@@ -31,24 +32,31 @@ class Forms
 	
 	/**
 	 * @return FormModel[]
+	 * @throws ApiException
 	 */
 	public function getForms(){
 
 		$resourcePath = "/forms.json";
-		
+			
 		list($response, $statusCode, $httpHeader) = $this->apiClient->callApi($resourcePath, 'GET');
 		
-		if (!$response) {
-			return array(null, $statusCode, $httpHeader);
+		if(!$response || isset($response->errorMessage)){
+			
+			$errorMessage = isset($response->errorMessage) ? $response->errorMessage : ApiException::UNKNOWN_API_EXCEPTION;
+			
+			throw new ApiException($errorMessage, $statusCode, $httpHeader);
+			
 		}
 		
 		return ObjectTransformer::transform($response, ObjectTransformer::FORM_TRANSFORMER);
+		
 	}
 	
 	/**
 	 * @param $formId
 	 *
 	 * @return FormModel
+	 * @throws ApiException
 	 */
 	public function getForm($formId){
 		
@@ -60,6 +68,14 @@ class Forms
 		
 		list($response, $statusCode, $httpHeader) = $this->apiClient->callApi($resourcePath, 'GET');
 		
+		if(!$response || isset($response->errorMessage)){
+			
+			$errorMessage = isset($response->errorMessage) ? $response->errorMessage : ApiException::UNKNOWN_API_EXCEPTION;
+			
+			throw new ApiException($errorMessage, $statusCode, $httpHeader);
+			
+		}
+		
 		return current(ObjectTransformer::transform($response, ObjectTransformer::FORM_TRANSFORMER));
 	}
 	
@@ -67,6 +83,7 @@ class Forms
 	 * @param $formId
 	 *
 	 * @return FieldModel[]
+	 * @throws ApiException
 	 */
 	public function getFormFields($formId){
 		
@@ -78,6 +95,14 @@ class Forms
 		
 		list($response, $statusCode, $httpHeader) = $this->apiClient->callApi($resourcePath, 'GET');
 		
+		if(!$response || isset($response->errorMessage)){
+			
+			$errorMessage = isset($response->errorMessage) ? $response->errorMessage : ApiException::UNKNOWN_API_EXCEPTION;
+			
+			throw new ApiException($errorMessage, $statusCode, $httpHeader);
+			
+		}
+		
 		return ObjectTransformer::transform($response, ObjectTransformer::FIELD_TRANSFORMER);
 	}
 	
@@ -85,6 +110,7 @@ class Forms
 	 * @param $formId
 	 *
 	 * @return SubmissionModel[]
+	 * @throws ApiException
 	 */
 	public function getSubmissions($formId){
 		
@@ -96,6 +122,14 @@ class Forms
 		
 		list($response, $statusCode, $httpHeader) = $this->apiClient->callApi($resourcePath, 'GET');
 		
+		if(!$response || isset($response->errorMessage)){
+			
+			$errorMessage = isset($response->errorMessage) ? $response->errorMessage : ApiException::UNKNOWN_API_EXCEPTION;
+			
+			throw new ApiException($errorMessage, $statusCode, $httpHeader);
+			
+		}
+		
 		return ObjectTransformer::transform($response, ObjectTransformer::SUBMISSION_TRANSFORMER);
 	}
 	
@@ -103,6 +137,7 @@ class Forms
 	 * @param $formId
 	 *
 	 * @return int
+	 * @throws ApiException
 	 */
 	public function getSubmissionsCount($formId)
 	{
@@ -115,6 +150,14 @@ class Forms
 		
 		list($response, $statusCode, $httpHeader) = $this->apiClient->callApi($resourcePath, 'GET');
 		
+		if(!$response || isset($response->errorMessage)){
+			
+			$errorMessage = isset($response->errorMessage) ? $response->errorMessage : ApiException::UNKNOWN_API_EXCEPTION;
+			
+			throw new ApiException($errorMessage, $statusCode, $httpHeader);
+			
+		}
+		
 		return (int) $response->submissionsCount;
 	}
 	
@@ -123,6 +166,7 @@ class Forms
 	 * @param $webHookUrl
 	 *
 	 * @return array
+	 * @throws ApiException
 	 */
 	public function addWebHook($formId, $webHookUrl)
 	{
@@ -139,6 +183,15 @@ class Forms
 		
 		list($response, $statusCode, $httpHeader) = $this->apiClient->callApi($resourcePath, 'GET', array('webhookUrl' => $webHookUrl));
 		
-		return ObjectTransformer::transform($response, ObjectTransformer::SUBMISSION_TRANSFORMER);
+		if(!$response || isset($response->errorMessage)){
+			
+			$errorMessage = isset($response->errorMessage) ? $response->errorMessage : ApiException::UNKNOWN_API_EXCEPTION;
+			
+			throw new ApiException($errorMessage, $statusCode, $httpHeader);
+			
+		}
+		
+		return $response->message;
+		
 	}
 }

@@ -4,6 +4,9 @@ namespace ContactForm\Api\V1;
 
 class ApiException extends \Exception
 {
+	
+	const UNKNOWN_API_EXCEPTION = 'Unknown API exception.';
+	
 	/**
 	 * The HTTP body of the server response either as Json or string.
 	 *
