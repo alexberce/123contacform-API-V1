@@ -60,8 +60,10 @@ _Make sure to replace the string APY-KEY-HERE with your actual API key_
 * [Get Single Form](/samples/getForm.php)
 * [Get Form Fields](/samples/getFields.php)
 * [Get Form Submissions](/samples/getSubmissions.php)
+* [Get Form Submissions Number](/samples/getSubmissionsCount.php)
 * [Get All SubUser Forms](/samples/getAllSubUserForms.php)
 * [Get SubUser Form](/samples/getSubUserForm.php)
+* [Add Webhook Application](/samples/addWebHookToForm.php)
 
 ### License
 
