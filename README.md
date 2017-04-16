@@ -7,6 +7,7 @@ Small PHP SDK and samples for version 1 of 123ContactForm API
 
 > **If you need advanced functionality, we highly recommend you to use [API V2](https://developer.123contactform.com/api-v2/)**
 
+> A Basic user can perform up to 100 API calls per day.
 
 ### Installation
 
@@ -20,7 +21,6 @@ Small PHP SDK and samples for version 1 of 123ContactForm API
 
 You can find the docs for API v1 at [https://developer.123contactform.com/api-v1/](https://developer.123contactform.com/api-v1/)
 
-_Please note that a Basic user can perform up to 100 API calls per day._
 
 ## Prerequisites
 
@@ -52,7 +52,7 @@ _Please note that a Basic user can perform up to 100 API calls per day._
         var_dump($e);
     }
 
-_Make sure to replace the string APY-KEY-HERE with your actual API key_
+> _Make sure to replace the string APY-KEY-HERE with your actual API key_
 
 ### Samples
 
