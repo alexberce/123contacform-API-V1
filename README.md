@@ -22,7 +22,7 @@ Small PHP SDK and samples for version 1 of 123ContactForm API
 You can find the docs for API v1 at [https://developer.123contactform.com/api-v1/](https://developer.123contactform.com/api-v1/)
 
 
-## Prerequisites
+### Prerequisites
 
    - PHP 5.3 or above
    - [curl](https://secure.php.net/manual/en/book.curl.php), [json](https://secure.php.net/manual/en/book.json.php) & [openssl](https://secure.php.net/manual/en/book.openssl.php) extensions must be enabled
