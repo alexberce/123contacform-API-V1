@@ -13,6 +13,7 @@ Small PHP SDK and samples for version 1 of 123ContactForm API
 
     $ git clone git://github.com/123contactform/123contacform-api-v1-php
     $ cd 123contactform-api-v1-php
+    $ composer install
     $ composer start
     $ navigate to http://127.0.0.1:8181
         
