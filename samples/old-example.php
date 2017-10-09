@@ -1,34 +1,34 @@
 <?php
-$apiKey="your-api-key-here"; //replace it with your own API key from "My Account" page
-$curl_post_string="apiKey=".$apiKey;
+$apiKey = "your-api-key-here"; //replace it with your own API key from "My Account" page
+$curl_post_string = "apiKey=" . $apiKey;
 
 /*————————-Step 1————————-*/
-$url="https://www.123contactform.com/api/forms.xml";
-$user_forms_xml=getCurlContentString($url, $curl_post_string);
+$url = "https://www.123contactform.com/api/forms.xml";
+$user_forms_xml = getCurlContentString($url, $curl_post_string);
 
 $doc = new DOMDocument();
 $doc->loadXML($user_forms_xml);
 
 $root = $doc->documentElement;
-if ($root->nodeName=="errorMessage") 
+if ($root->nodeName == "errorMessage") 
 {
-	die($root->nodeName.": ".$root->nodeValue);
+	die($root->nodeName . ": " . $root->nodeValue);
 }
 
 /*————————-Step 2————————-*/
-$firstFormXml="";
+$firstFormXml = "";
 foreach ($root->childNodes as $child) 
 {
 	if ($child->nodeType == 1) 
 	{ 
 		/*we make sure that the node is an element
 		(not an attribute or a text node)*/
-		$firstFormXml=$child;
+		$firstFormXml = $child;
 		break;
 	}
 }
 
-$firstForm=array();
+$firstForm = array();
 if (!empty($firstFormXml)) 
 {
 	foreach ($firstFormXml->childNodes as $fieldNode) 
@@ -38,17 +38,17 @@ if (!empty($firstFormXml))
 			if ($fieldNode->nodeName == "formEmails") 
 			{ 	
 				//<formEmails> has <email> children
-				$firstForm[$fieldNode->nodeName]=array();
-				$emails_array=array();
+				$firstForm[$fieldNode->nodeName] = array();
+				$emails_array = array();
 				foreach ($fieldNode->childNodes as $sub_child) 
 				{
-					$sub_child_value=trim($sub_child->nodeValue);
+					$sub_child_value = trim($sub_child->nodeValue);
 					if (!empty($sub_child_value)) 
 					{
 						$emails_array[] = $sub_child_value;
 					}
 				}
-				$firstForm[$fieldNode->nodeName]=$emails_array;
+				$firstForm[$fieldNode->nodeName] = $emails_array;
 			} 
 			else 
 			{
@@ -62,50 +62,50 @@ echo "First form:";
 print_r($firstForm);
 
 /*————————-Step 3————————-*/
-$firstFormId=$firstForm["formId"];
-$url="https://www.123contactform.com/api/forms/$firstFormId/submissions/count.xml";
-$submissions_count_xml=getCurlContentString($url, $curl_post_string);
+$firstFormId = $firstForm["formId"];
+$url = "https://www.123contactform.com/api/forms/$firstFormId/submissions/count.xml";
+$submissions_count_xml = getCurlContentString($url, $curl_post_string);
 
 $doc = new DOMDocument();
 $doc->loadXML($submissions_count_xml);
 
 $root = $doc->documentElement;
 
-if ($root->nodeName=="errorMessage") 
+if ($root->nodeName == "errorMessage") 
 {
-	die($root->nodeName.": ".$root->nodeValue);
+	die($root->nodeName . ": " . $root->nodeValue);
 }
-$submissionsCount="";
+$submissionsCount = "";
 foreach ($root->childNodes as $child) 
 { 	
 	if ($child->nodeType == 3) 
 	{ 
 		//we make sure that it's a text node
-		$submissionsCount=$child->nodeValue;
+		$submissionsCount = $child->nodeValue;
 		break;
 	}
 }
 echo "<br /><br />";
-echo "Number of submissions: ".$submissionsCount;
+echo "Number of submissions: " . $submissionsCount;
 
 /*————————-Step 4————————-*/
-$pageNrArray=array(0,1,2,3);
-$pageSize=50;
-$last_200_submissions=array();
+$pageNrArray = array(0, 1, 2, 3);
+$pageSize = 50;
+$last_200_submissions = array();
 foreach ($pageNrArray as $key=>$pageNr) 
 {
-	$url="https://www.123contactform.com/api/forms/$firstFormId/submissions.xml";
-	$submissions_xml=getCurlContentString($url,
-	$curl_post_string."&pageNr=$pageNr&pageSize=$pageSize&sort=DESC");
+	$url = "https://www.123contactform.com/api/forms/$firstFormId/submissions.xml";
+	$submissions_xml = getCurlContentString($url,
+	$curl_post_string . "&pageNr=$pageNr&pageSize=$pageSize&sort=DESC");
 
 	$doc = new DOMDocument();
 	$doc->loadXML($submissions_xml);
 
 	$root = $doc->documentElement;
 
-	if ($root->nodeName=="errorMessage") 
+	if ($root->nodeName == "errorMessage") 
 	{
-		die($root->nodeName.": ".$root->nodeValue);
+		die($root->nodeName . ": " . $root->nodeValue);
 	}
 
 	foreach ($root->childNodes as $child) 
@@ -113,30 +113,30 @@ foreach ($pageNrArray as $key=>$pageNr)
 		//we make sure that the node is an element (not an attribute or a text node):
 		if ($child->nodeType == 1 && $child->nodeName == "submission") 
 		{
-			$new_submission=array();
-			$new_submission_fields=array();
+			$new_submission = array();
+			$new_submission_fields = array();
 			foreach ($child->childNodes as $sub_child) 
 			{
-				if ($sub_child->nodeType==1) 
+				if ($sub_child->nodeType == 1) 
 				{
 					foreach ($sub_child->childNodes as $sub_node) 
 					{
-						if ($sub_node->nodeType==3) 
+						if ($sub_node->nodeType == 3) 
 						{
-							$new_submission[$sub_child->nodeName]=$sub_node->nodeValue;
+							$new_submission[$sub_child->nodeName] = $sub_node->nodeValue;
 						} 
-						elseif ($sub_node->nodeType==1 && $sub_node->nodeName=="field") 
+						elseif ($sub_node->nodeType == 1 && $sub_node->nodeName == "field") 
 						{
 							foreach ($sub_node->childNodes as $child_node) 
 							{
-								if ($child_node->nodeType==1) 
+								if ($child_node->nodeType == 1) 
 								{
-									$field_name=$child_node->nodeName;
-									$field_value=$child_node->nodeValue;
-									$new_submission_field[$field_name]=$field_value;
+									$field_name = $child_node->nodeName;
+									$field_value = $child_node->nodeValue;
+									$new_submission_field[$field_name] = $field_value;
 								}
 							}
-							$new_submission_fields[]=$new_submission_field;
+							$new_submission_fields[] = $new_submission_field;
 						}
 					}
 				}
@@ -151,9 +151,9 @@ echo "Last 200 submissions:";
 print_r($last_200_submissions);
 
 /*————————-Step 5————————-*/
-$url="https://www.123contactform.com/api/forms/$firstFormId/webhooks.xml";
-$webhook_url="http://www.google.com"; //replace google.com with the desired webhook URL
-$post_webhook_xml=getCurlContentString($url, $curl_post_string."&webhookUrl=".
+$url = "https://www.123contactform.com/api/forms/$firstFormId/webhooks.xml";
+$webhook_url = "http://www.google.com"; //replace google.com with the desired webhook URL
+$post_webhook_xml = getCurlContentString($url, $curl_post_string . "&webhookUrl=" .
 urlencode($webhook_url));
 
 echo "<br /><br /><br />";
@@ -164,45 +164,45 @@ $doc->loadXML($post_webhook_xml);
 
 $root = $doc->documentElement;
 
-if ($root->nodeName=="errorMessage") 
+if ($root->nodeName == "errorMessage") 
 {
 	echo "<br /><br />";
-	die($root->nodeName.": ".$root->nodeValue);
+	die($root->nodeName . ": " . $root->nodeValue);
 }
-$message="";
+$message = "";
 foreach ($root->childNodes as $child) 
 { 
 	if ($child->nodeType == 3) 
 	{ 
 		//we make sure that it's a text node
-		$message=$child->nodeValue;
+		$message = $child->nodeValue;
 		break;
 	}
 }
 echo "<br /><br />";
-echo "Message: ".$message;
+echo "Message: " . $message;
 
 /*————————-Step 6————————-*/
-$subuserEmail="subuser-email-address-here";
-$subuserEmailEncoded=urlencode($subuserEmail);
-$url="https://www.123contactform.com/api/subusers/$subuserEmailEncoded/forms.xml";
-$user_forms_xml=getCurlContentString($url, $curl_post_string);
+$subuserEmail = "subuser-email-address-here";
+$subuserEmailEncoded = urlencode($subuserEmail);
+$url = "https://www.123contactform.com/api/subusers/$subuserEmailEncoded/forms.xml";
+$user_forms_xml = getCurlContentString($url, $curl_post_string);
 
 $doc = new DOMDocument();
 $doc->loadXML($user_forms_xml);
 
 $root = $doc->documentElement;
-if ($root->nodeName=="errorMessage") 
+if ($root->nodeName == "errorMessage") 
 {
-	die($root->nodeName.": ".$root->nodeValue);
+	die($root->nodeName . ": " . $root->nodeValue);
 }
 
-$subuserForms=array();
+$subuserForms = array();
 if (!empty($root->childNodes)) 
 {
 	foreach ($root->childNodes as $formNode) 
 	{
-		$subuserFormArray=array();
+		$subuserFormArray = array();
 		if ($formNode->nodeType == 1) 
 		{
 			foreach ($formNode->childNodes as $fieldNode) 
@@ -212,17 +212,17 @@ if (!empty($root->childNodes))
 					if ($fieldNode->nodeName == "formEmails")
 					{ 
 						//<formEmails> has <email> children
-						$subuserFormArray[$fieldNode->nodeName]=array();
-						$emails_array=array();
+						$subuserFormArray[$fieldNode->nodeName] = array();
+						$emails_array = array();
 						foreach ($fieldNode->childNodes as $sub_child) 
 						{
-							$sub_child_value=trim($sub_child->nodeValue);
+							$sub_child_value = trim($sub_child->nodeValue);
 							if (!empty($sub_child_value)) 
 							{
 								$emails_array[] = $sub_child_value;
 							}
 						}
-						$subuserFormArray[$fieldNode->nodeName]=$emails_array;
+						$subuserFormArray[$fieldNode->nodeName] = $emails_array;
 					} 
 					else 
 					{
@@ -232,7 +232,7 @@ if (!empty($root->childNodes))
 			}
 		}
 		if (!empty($subuserFormArray)) {
-		$subuserForms[]=$subuserFormArray;
+		$subuserForms[] = $subuserFormArray;
 		}
 	}
 }

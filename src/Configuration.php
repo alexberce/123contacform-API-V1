@@ -118,7 +118,7 @@ class Configuration
 		if (!is_string($headerName)) {
 			throw new \InvalidArgumentException('Header name must be a string.');
 		}
-		$this->defaultHeaders[$headerName] =  $headerValue;
+		$this->defaultHeaders[$headerName] = $headerValue;
 		return $this;
 	}
 	
@@ -342,10 +342,10 @@ class Configuration
 	public static function toDebugReport()
 	{
 		$report  = "PHP SDK (ContactForm\\Client) Debug Report:\n";
-		$report .= "    OS: ".php_uname()."\n";
-		$report .= "    PHP Version: ".phpversion()."\n";
+		$report .= "    OS: " . php_uname() . "\n";
+		$report .= "    PHP Version: " . phpversion() . "\n";
 		$report .= "    SDK Package Version: 1.0.0\n";
-		$report .= "    Temp Folder Path: ".self::getDefaultConfiguration()->getTempFolderPath()."\n";
+		$report .= "    Temp Folder Path: " . self::getDefaultConfiguration()->getTempFolderPath() . "\n";
 		return $report;
 	}
 }

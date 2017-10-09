@@ -58,7 +58,7 @@ class Forms
 	 * @return FormModel
 	 * @throws ApiException
 	 */
-	public function getForm($formId){
+	public function getForm($formId) {
 		
 		if (!is_numeric($formId)) {
 			throw new \InvalidArgumentException('Invalid $formId parameter type when calling getForm');
@@ -85,7 +85,7 @@ class Forms
 	 * @return FieldModel[]
 	 * @throws ApiException
 	 */
-	public function getFormFields($formId){
+	public function getFormFields($formId) {
 		
 		if (!is_numeric($formId)) {
 			throw new \InvalidArgumentException('Invalid $formId parameter type when calling getFormFields');
@@ -112,7 +112,7 @@ class Forms
 	 * @return SubmissionModel[]
 	 * @throws ApiException
 	 */
-	public function getSubmissions($formId){
+	public function getSubmissions($formId) {
 		
 		if (!is_numeric($formId)) {
 			throw new \InvalidArgumentException('Invalid $formId parameter type when calling getSubmissions');
