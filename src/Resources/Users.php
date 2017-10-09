@@ -50,7 +50,7 @@ class Users
 	 * @return FormModel[]
 	 * @throws ApiException
 	 */
-	public function getForms(){
+	public function getForms() {
 		
 		if (empty($this->emailAddress)) {
 			throw new \InvalidArgumentException('Missing the required parameter emailAddress when calling getForms');
@@ -77,7 +77,7 @@ class Users
 	 * @return FormModel
 	 * @throws ApiException
 	 */
-	public function getForm($formId){
+	public function getForm($formId) {
 		
 		if (!is_numeric($formId)) {
 			throw new \InvalidArgumentException('Invalid $formId parameter type when calling getForm');

@@ -22,7 +22,7 @@ class ObjectTransformer
 	 */
 	public static function transform($jsonResponseData, $type)
 	{
-		switch($type){
+		switch ($type) {
 			case self::FORM_TRANSFORMER:
 				return (new FormTransformer())->transform($jsonResponseData);
 				break;
